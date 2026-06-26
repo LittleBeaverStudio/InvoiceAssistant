@@ -1,6 +1,6 @@
+![License](https://img.shields.io/github/license/LittleBeaverStudio/KingdeeDataAnalyzer?label=license)
 # 小河狸发票助手 Skill
 
-License: MIT
 
 这个仓库用于 OpenClaw / WorkBuddy / Codex 类智能体读取本机“小河狸发票助手”的发票台账数据。
 
