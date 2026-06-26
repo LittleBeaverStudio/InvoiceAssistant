@@ -1,9 +1,12 @@
 ---
 name: littlebeaver-invoice-assistant
 description: Read and analyze local Little Beaver Invoice Assistant data. Use when a user asks an agent to connect to 小河狸发票助手, query invoice ledgers, invoice items, companies, customer/supplier/product rankings, monthly invoice trends, or local tax invoice summaries through the app's localhost Skill API.
+license: MIT
 ---
 
 # 小河狸发票助手 Skill
+
+License: MIT
 
 Use this skill to read invoice data from the user's local 小河狸发票助手 desktop app. The app must be running on the same computer as the agent. Data is read through the local API only and is not uploaded by this skill.
 
@@ -68,4 +71,3 @@ The summary and ranking endpoints exclude invoices whose status contains `作废
 When answering finance questions, state the data scope: selected company, date range, and whether voided invoices were excluded. Treat tax differences as invoice-ledger calculations, not final tax payable or filing results.
 
 For questions such as "哪些客户开票下降明显", use the summary/ranking data first. If a precise decline calculation is needed, pull invoice details by month and compare recent periods.
-
