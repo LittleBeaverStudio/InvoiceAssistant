@@ -12,7 +12,9 @@
 python scripts/invoice_assistant_client.py companies
 python scripts/invoice_assistant_client.py summary --company-id 1 --start 2026-01-01 --end 2026-06-30
 python scripts/invoice_assistant_client.py invoices --company-id 1 --keyword 作废
+python scripts/invoice_assistant_client.py attachments --company-id 1
+python scripts/invoice_assistant_client.py open-attachment --attachment-id 123
 python scripts/invoice_assistant_client.py rankings --company-id 1 --limit 10
 ```
 
-当前版本只读提取数据，不支持通过智能体导入、修改或删除发票数据。
+当前版本主要用于只读提取数据，不支持通过智能体导入、修改或删除发票数据。`open-attachment` 只会在本机调用系统默认程序打开已归档的 PDF/OFD/XML 文件，不会把文件内容上传到智能体或云端。

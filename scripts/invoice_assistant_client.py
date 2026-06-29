@@ -36,11 +36,15 @@ def parse_ports(value: str | None) -> list[int]:
     return sorted(dict.fromkeys(ports))
 
 
-def http_get_json(url: str, timeout: float = 2.5) -> dict[str, Any]:
-    req = Request(url, headers={"Accept": "application/json", "User-Agent": "LittleBeaverInvoiceAssistantSkill/1.0"})
+def http_json(url: str, timeout: float = 2.5, method: str = "GET") -> dict[str, Any]:
+    req = Request(url, headers={"Accept": "application/json", "User-Agent": "LittleBeaverInvoiceAssistantSkill/1.0"}, method=method)
     with urlopen(req, timeout=timeout) as resp:
         charset = resp.headers.get_content_charset() or "utf-8"
         return json.loads(resp.read().decode(charset))
+
+
+def http_get_json(url: str, timeout: float = 2.5) -> dict[str, Any]:
+    return http_json(url, timeout=timeout, method="GET")
 
 
 def normalize_base_url(value: str) -> str:
@@ -90,11 +94,11 @@ def build_query(args: argparse.Namespace, fields: list[str]) -> str:
     return urlencode(pairs)
 
 
-def request_skill(base_url: str, path: str, query: str = "") -> dict[str, Any]:
+def request_skill(base_url: str, path: str, query: str = "", method: str = "GET") -> dict[str, Any]:
     url = f"{base_url}{path}"
     if query:
         url += "?" + query
-    data = http_get_json(url)
+    data = http_json(url, method=method)
     if not data.get("success"):
         raise RuntimeError(data.get("error") or f"API request failed: {path}")
     return data
@@ -136,6 +140,14 @@ def main() -> int:
     items.add_argument("--page", type=int, default=1)
     items.add_argument("--page-size", type=int, default=50)
 
+    attachments = sub.add_parser("attachments")
+    attachments.add_argument("--company-id", action="append", dest="company_id", help="公司 ID，可重复传入")
+    attachments.add_argument("--invoice-id", type=int, help="发票主表 ID")
+    attachments.add_argument("--file-type", choices=["PDF", "OFD", "XML"], help="附件类型")
+
+    open_attachment = sub.add_parser("open-attachment")
+    open_attachment.add_argument("--attachment-id", type=int, required=True, help="附件 ID")
+
     rankings = sub.add_parser("rankings")
     add_common_filters(rankings)
     rankings.add_argument("--limit", type=int, default=10)
@@ -155,6 +167,10 @@ def main() -> int:
             print_json(request_skill(base_url, "/api/skill/invoices", build_query(args, ["company_id", "start", "end", "direction", "keyword", "page", "page_size"])))
         elif args.command == "items":
             print_json(request_skill(base_url, "/api/skill/items", build_query(args, ["company_id", "start", "end", "direction", "keyword", "page", "page_size"])))
+        elif args.command == "attachments":
+            print_json(request_skill(base_url, "/api/skill/attachments", build_query(args, ["company_id", "invoice_id", "file_type"])))
+        elif args.command == "open-attachment":
+            print_json(request_skill(base_url, f"/api/skill/attachments/{args.attachment_id}/open", method="POST"))
         elif args.command == "rankings":
             print_json(request_skill(base_url, "/api/skill/rankings", build_query(args, ["company_id", "start", "end", "direction", "limit"])))
         return 0

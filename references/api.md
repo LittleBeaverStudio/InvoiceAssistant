@@ -20,17 +20,26 @@
 
 参数：`company_id`、`start`、`end`、`direction`、`keyword`、`page`、`page_size`。
 
-返回发票主表，包含公司、发票号码、日期、购销方名称与税号、金额、税额、价税合计、票种、状态、风险、备注、原始 JSON 等字段。
+返回发票主表，包含公司、发票号码、日期、购销方名称与税号、金额、税额、价税合计、票种、状态、风险、备注、原始 JSON、电子发票附件摘要等字段。
 
 ## GET /api/skill/items
 
 参数同 `/api/skill/invoices`。
 
-返回发票明细，包含商品服务名称、规格、单位、数量、单价、金额、税率、税额、价税合计等字段。
+返回发票明细，包含商品服务名称、规格、单位、数量、单价、金额、税率、税额、价税合计、电子发票附件摘要等字段。
+
+## GET /api/skill/attachments
+
+参数：`company_id`、`invoice_id`、`file_type`。
+
+返回已扫描归档的 PDF/OFD/XML 附件清单，包含附件 ID、发票 ID、公司、发票号码、文件类型、文件名、导出时间、文件大小、是否仍存在、可调用的本机打开接口。该接口不返回本机绝对路径。
+
+## POST /api/skill/attachments/{id}/open
+
+在本机调用系统默认程序打开指定附件。若文件不存在，或电脑未安装可打开 PDF/OFD/XML 的程序，会返回错误提示。该接口不会上传文件内容。
 
 ## GET /api/skill/rankings
 
 参数：`company_id`、`start`、`end`、`direction`、`limit`。
 
 返回 Top 客户、Top 供应商、Top 商品服务。该接口剔除状态包含“作废”的发票。
-
