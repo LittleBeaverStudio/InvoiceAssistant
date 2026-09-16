@@ -3,7 +3,7 @@
 > 对外销售、集成进收费产品或服务、托管 / SaaS / 代运营、以及**向第三方交付成果或提供服务，须事先取得书面授权**。
 > 许可全文见 [LICENSE](./LICENSE)。商业授权：https://littlebeaver.top
 
-![License](https://img.shields.io/github/license/LittleBeaverStudio/KingdeeDataAnalyzer?label=license)
+[![License](https://img.shields.io/badge/License-%E5%B0%8F%E6%B2%B3%E7%8B%B8%E9%9D%9E%E8%BD%AC%E5%94%AE%E8%AE%B8%E5%8F%AF-blue.svg)](./LICENSE)
 # 小河狸发票助手 Skill
 
 
